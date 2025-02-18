@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: pr
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework: INFO
+    org.orderhub.pr: TRACE
