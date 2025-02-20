@@ -2,7 +2,6 @@ package org.orderhub.pr.auth.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import org.orderhub.pr.auth.domain.Member;
 import org.orderhub.pr.auth.domain.MemberRole;
 import org.orderhub.pr.auth.domain.MemberStatus;
 
