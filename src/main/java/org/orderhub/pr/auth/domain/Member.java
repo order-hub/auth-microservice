@@ -32,16 +32,20 @@ public class Member {
     private String tel;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private MemberRole role = MemberRole.MANAGER; // 기본값 MANAGER 설정
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private MemberStatus status = MemberStatus.PENDING;
 
     @CreationTimestamp
+    @Builder.Default
     @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
 
     @UpdateTimestamp
-    @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
-    private Instant updatedAt;
+    @Builder.Default
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
+    private Instant updatedAt = Instant.now();
 }
