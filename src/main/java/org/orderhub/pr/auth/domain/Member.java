@@ -1,10 +1,9 @@
 package org.orderhub.pr.auth.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -12,6 +11,8 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class Member {
 
     @Id
@@ -19,45 +20,28 @@ public class Member {
     @Column(name = "member_id")
     private UUID id;
 
+    @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
     private String realName;
 
+    @Column(nullable = false, unique = true)
     private String tel;
 
     @Enumerated(EnumType.STRING)
     private MemberRole role = MemberRole.MANAGER; // 기본값 MANAGER 설정
 
     @Enumerated(EnumType.STRING)
-    private MemberStatus status;
+    private MemberStatus status = MemberStatus.PENDING;
 
-    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @CreationTimestamp
+    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     private Instant createdAt;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     private Instant updatedAt;
-
-    @Builder
-    protected Member(String username, String password, String realName, String tel, MemberRole role, MemberStatus status) {
-        this.username = username;
-        this.password = password;
-        this.realName = realName;
-        this.tel = tel;
-        this.role = role;
-        this.status = status;
-        this.createdAt = Instant.now();
-        this.updatedAt = this.createdAt;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = Instant.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = Instant.now();
-    }
 }
