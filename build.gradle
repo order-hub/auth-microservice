@@ -45,4 +45,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    test {
+        jvmArgs += ["-javaagent:${classpath.find { it.name.contains('mockito-core') }.absolutePath}"]
+        jvmArgs '-Xshare:off'
+    }
 }
