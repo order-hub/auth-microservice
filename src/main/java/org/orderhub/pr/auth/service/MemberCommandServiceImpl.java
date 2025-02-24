@@ -26,6 +26,13 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     @Transactional
     public SignUpResponse signUp(SignUpRequest request) {
+        if (memberCommandRepository.existsByUsername(request.getUsername())) {
+            throw new IllegalArgumentException(DUPLICATE_USERNAME_ERROR);
+        }
+        if (memberCommandRepository.existsByTel(request.getTel())) {
+            throw new IllegalArgumentException(DUPLICATE_TEL_ERROR);
+        }
+
         Member member = Member.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
