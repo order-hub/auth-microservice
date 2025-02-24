@@ -3,7 +3,7 @@ package org.orderhub.pr.auth.controller;
 import lombok.RequiredArgsConstructor;
 import org.orderhub.pr.auth.domain.MemberRole;
 import org.orderhub.pr.auth.domain.MemberStatus;
-import org.orderhub.pr.auth.service.MemberService;
+import org.orderhub.pr.auth.service.MemberCommandService;
 import org.springframework.web.bind.annotation.*;
 import org.orderhub.pr.auth.dto.MemberCommandDto.*;
 
@@ -30,10 +30,13 @@ public class MemberCommandApi {
     @PutMapping("/members/{id}/status")
     public ChangeStatusResponse updateUserStatus(@PathVariable UUID id, @RequestBody MemberStatus status) {
         // 구현 로직
-        return  memberService.changeMemberStatus(id, status);
         return  memberCommandService.changeMemberStatus(id, status);
     }
 
+    @PutMapping("/members/{id}/password")
+    public UpdatePasswordResponse updatePassword(@PathVariable UUID id,
+                                                               @RequestBody UpdatePasswordRequest request) {
+        return memberCommandService.updatePassword(id, request);
     }
 
     @DeleteMapping("/members/{id}/delete")

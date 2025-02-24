@@ -53,6 +53,19 @@ public class MemberCommandDto {
         Boolean success;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdatePasswordRequest {
+        @NotEmpty(message = "현재 비밀번호는 필수 입력값입니다.")
+        String currentPassword;
+
+        @NotEmpty(message = "새 비밀번호는 필수 입력값입니다.")
+        @Pattern(regexp = PASSWORD, message = PASSWORD_MESSAGE)
+        String newPassword;
+
+    }
+
     @Builder
     public static class UpdatePasswordResponse {
         Boolean success;
