@@ -2,10 +2,7 @@ package org.orderhub.pr.auth.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import org.orderhub.pr.auth.domain.MemberStatus;
+import lombok.*;
 
 import static org.orderhub.pr.policy.Accounts.Validation.*;
 import static org.orderhub.pr.system.exception.auth.ValidationMessage.*;
@@ -38,10 +35,6 @@ public class MemberCommandDto {
         Boolean success;
     }
 
-    @Data
-    public static class ChangeStatusRequest {
-        private MemberStatus memberStatus;
-    }
 
     @Builder
     public static class ChangeStatusResponse {
