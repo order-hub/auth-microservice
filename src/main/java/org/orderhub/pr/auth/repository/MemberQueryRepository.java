@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface MemberRepository extends JpaRepository<Member, UUID> {
+public interface MemberQueryRepository extends JpaRepository<Member, UUID> {
+
     Optional<Member> findByUsername(String username);
-    boolean existsByUsername(String username);
+
+    // TODO: 추후에 해당 메서드 사용 예정
     List<Member> findByStatus(MemberStatus status);
 }

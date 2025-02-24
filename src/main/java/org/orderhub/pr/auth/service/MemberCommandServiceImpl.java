@@ -6,22 +6,21 @@ import org.orderhub.pr.auth.domain.Member;
 import org.orderhub.pr.auth.domain.MemberRole;
 import org.orderhub.pr.auth.domain.MemberStatus;
 import org.orderhub.pr.auth.dto.MemberCommandDto.*;
-import org.orderhub.pr.auth.dto.MemberQueryDto.*;
-import org.orderhub.pr.auth.repository.MemberRepository;
+import org.orderhub.pr.auth.repository.MemberCommandRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
-import static org.orderhub.pr.auth.exception.ExceptionMessage.MEMBER_NOT_FOUND_ERROR;
+import static org.orderhub.pr.auth.exception.ExceptionMessage.*;
 
+// TODO 권한별 로직 추가
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberServiceImpl implements MemberService {
-    private final MemberRepository memberRepository;
+public class MemberCommandServiceImpl implements MemberCommandService {
+    private final MemberCommandRepository memberCommandRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -33,58 +32,13 @@ public class MemberServiceImpl implements MemberService {
                 .realName(request.getRealName())
                 .tel(request.getTel())
                 .build();
-        memberRepository.save(member);
+        memberCommandRepository.save(member);
 
         return SignUpResponse.builder()
                 .success(true)
                 .build();
     }
 
-    @Override
-    public FindMemberResponse getAllMembers() {
-        List<FindMemberByIdResponse> members = memberRepository.findAll().stream()
-                .map(member -> FindMemberByIdResponse.builder()
-                        .id(member.getId())
-                        .username(member.getUsername())
-                        .realName(member.getRealName())
-                        .tel(member.getTel())
-                        .role(member.getRole())
-                        .status(member.getStatus())
-                        .success(true)
-                        .build())
-                .toList();
-
-        return FindMemberResponse.builder()
-                .members(members)
-                .build();
-    }
-
-    @Override
-    public FindMemberByIdResponse getMemberById(UUID id) {
-        return memberRepository.findById(id)
-                .map(member -> FindMemberByIdResponse.builder()
-                        .username(member.getUsername())
-                        .realName(member.getRealName())
-                        .tel(member.getTel())
-                        .role(member.getRole())
-                        .status(member.getStatus())
-                        .build())
-                .orElse(FindMemberByIdResponse.builder().success(false).build());
-    }
-
-
-    @Override
-    public FindMemberByUsernameResponse findByUsername(String username) {
-        return memberRepository.findByUsername(username)
-                .map(member -> FindMemberByUsernameResponse.builder()
-                        .username(member.getUsername())
-                        .realName(member.getRealName())
-                        .tel(member.getTel())
-                        .role(member.getRole())
-                        .status(member.getStatus())
-                        .build())
-                .orElse(FindMemberByUsernameResponse.builder().success(false).build());
-    }
 
     @Override
     @Transactional
