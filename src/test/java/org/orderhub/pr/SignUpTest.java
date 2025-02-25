@@ -14,10 +14,9 @@ import org.orderhub.pr.auth.domain.Member;
 import org.orderhub.pr.auth.domain.MemberRole;
 import org.orderhub.pr.auth.domain.MemberStatus;
 import org.orderhub.pr.auth.repository.MemberCommandRepository;
-import org.orderhub.pr.auth.repository.MemberQueryRepository;
 import org.orderhub.pr.auth.service.MemberCommandServiceImpl;
 import org.orderhub.pr.auth.dto.MemberCommandDto.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.orderhub.pr.auth.service.MemberQueryService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
@@ -35,8 +34,6 @@ class SignUpTest {
     @Mock
     private MemberCommandRepository memberCommandRepository;
 
-    @Mock
-    private MemberQueryRepository memberQueryRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -44,13 +41,16 @@ class SignUpTest {
     @InjectMocks
     private MemberCommandServiceImpl memberService;
 
+    @Mock
+    private MemberQueryService memberQueryService;
+
     @InjectMocks
     private SignUpRequest signUpRequest;
 
     @BeforeEach
     void initializeTestData() {
         signUpRequest = SignUpRequest.builder()
-                .username("testuser")
+                .username("tester")
                 .password("Password123!")
                 .realName("Test User")
                 .tel("01012345678")
@@ -60,10 +60,12 @@ class SignUpTest {
     @Test
     @DisplayName("회원가입 테스트")
     void testSignUpMember() {
+        /*
+        진짜로 암호화 된 코드 확인을 위해 작성했으나 확인 후 주석처리
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
+        */
         // given
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
-
         when(passwordEncoder.encode(signUpRequest.getPassword())).thenReturn("encodedPassword");
 
         Member savedMember = Member.builder()
@@ -103,7 +105,7 @@ class SignUpTest {
     @DisplayName("중복 아이디 검사 테스트")
     void testSignUpWithDuplicateUsername() {
         // given
-        when(memberQueryRepository.existsByUsername(signUpRequest.getUsername())).thenReturn(true);  // 아이디가 이미 존재한다고 가정
+        when(memberQueryService.existsByUsername(signUpRequest.getUsername())).thenReturn(true);  // 아이디가 이미 존재한다고 가정
 
         // when & then
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -120,7 +122,7 @@ class SignUpTest {
     @DisplayName("중복 전화번호 검사 테스트")
     void testSignUpWithDuplicateTel() {
         // given
-        when(memberQueryRepository.existsByTel(signUpRequest.getTel())).thenReturn(true);  // 아이디가 이미 존재한다고 가정
+        when(memberQueryService.existsByTel(signUpRequest.getTel())).thenReturn(true);  // 아이디가 이미 존재한다고 가정
 
         // when & then
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
