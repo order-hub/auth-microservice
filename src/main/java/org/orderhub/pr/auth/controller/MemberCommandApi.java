@@ -39,7 +39,7 @@ public class MemberCommandApi {
         return memberCommandService.updatePassword(id, request);
     }
 
-    @DeleteMapping("/members/{id}/delete")
+    @DeleteMapping("/members/{id}")
     public DeleteMemberResponse deleteUser(@PathVariable UUID id) {
         // 구현 로직
         return memberCommandService.deleteMember(id);
