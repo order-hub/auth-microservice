@@ -1,6 +1,5 @@
 package org.orderhub.pr.auth.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.orderhub.pr.auth.domain.Member;
 import org.orderhub.pr.auth.domain.MemberRole;
@@ -18,18 +17,18 @@ import static org.orderhub.pr.auth.exception.ExceptionMessage.*;
 // TODO 권한별 로직 추가
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberCommandRepository memberCommandRepository;
+    private final MemberQueryService memberQueryService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional
     public SignUpResponse signUp(SignUpRequest request) {
-        if (memberCommandRepository.existsByUsername(request.getUsername())) {
+        if (memberQueryService.existsByUsername(request.getUsername())) {
             throw new IllegalArgumentException(DUPLICATE_USERNAME_ERROR);
         }
-        if (memberCommandRepository.existsByTel(request.getTel())) {
+        if (memberQueryService.existsByTel(request.getTel())) {
             throw new IllegalArgumentException(DUPLICATE_TEL_ERROR);
         }
 
@@ -39,6 +38,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
                 .realName(request.getRealName())
                 .tel(request.getTel())
                 .build();
+
         memberCommandRepository.save(member);
 
         return SignUpResponse.builder()
@@ -46,40 +46,32 @@ public class MemberCommandServiceImpl implements MemberCommandService {
                 .build();
     }
 
-
     @Override
-    @Transactional
     public ChangeStatusResponse changeMemberStatus(UUID id, MemberStatus newStatus) {
-        Member member = memberCommandRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND_ERROR));
+        Member member = memberQueryService.findMemberEntityById(id);
 
         member.updateMemberStatus(newStatus);
-        memberCommandRepository.save(member);
+//        memberCommandRepository.save(member);
 
         return ChangeStatusResponse.builder().success(true).build();
     }
 
     @Override
-    @Transactional
     public UpdateMemberRoleResponse updateMemberRole(UUID id, MemberRole newRole) {
-        Member member = memberCommandRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND_ERROR));
+        Member member = memberQueryService.findMemberEntityById(id);
 
         member.updateMemberRole(newRole);
-        memberCommandRepository.save(member);
+//        memberCommandRepository.save(member);
 
         return UpdateMemberRoleResponse.builder().success(true).build();
     }
 
     @Override
-    @Transactional
     public UpdatePasswordResponse updatePassword(UUID id, UpdatePasswordRequest request) {
-        Member member = memberCommandRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("해당 회원을 찾을 수 없습니다."));
+        Member member = memberQueryService.findMemberEntityById(id);
 
-        // 현재 비밀번호 확인
         if (!passwordEncoder.matches(request.getCurrentPassword(), member.getPassword())) {
-            throw new IllegalArgumentException("현재 비밀번호가 올바르지 않습니다.");
+            throw new IllegalArgumentException(INVALID_PASSWORD_ERROR);
         }
 
         String encodedPassword = passwordEncoder.encode(request.getNewPassword());
@@ -90,10 +82,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    @Transactional
     public DeleteMemberResponse deleteMember(UUID id) {
-        Member member = memberCommandRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND_ERROR));
+        Member member = memberQueryService.findMemberEntityById(id);
 
         member.deleteMember();
         memberCommandRepository.save(member);
