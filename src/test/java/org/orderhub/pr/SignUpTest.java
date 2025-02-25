@@ -108,10 +108,10 @@ class SignUpTest {
         when(memberQueryService.existsByUsername(signUpRequest.getUsername())).thenReturn(true);  // 아이디가 이미 존재한다고 가정
 
         // when & then
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            memberService.signUp(signUpRequest);
-        });
-
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> memberService.signUp(signUpRequest)
+        );
         // exception 메시지가 "이미 사용 중인 아이디입니다."인지 확인
         Assertions.assertEquals(DUPLICATE_USERNAME_ERROR, exception.getMessage());
 
@@ -125,9 +125,10 @@ class SignUpTest {
         when(memberQueryService.existsByTel(signUpRequest.getTel())).thenReturn(true);  // 아이디가 이미 존재한다고 가정
 
         // when & then
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            memberService.signUp(signUpRequest);
-        });
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> memberService.signUp(signUpRequest)
+        );
 
         // exception 메시지가 "이미 사용 중인 아이디입니다."인지 확인
         Assertions.assertEquals(DUPLICATE_TEL_ERROR, exception.getMessage());
