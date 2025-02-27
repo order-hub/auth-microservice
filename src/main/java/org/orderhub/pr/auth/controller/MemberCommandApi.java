@@ -23,19 +23,19 @@ public class MemberCommandApi {
         return memberCommandService.signUp(signUpRequest);
     }
 
-    @PutMapping("/members/{id}/role")
+    @PutMapping("/members/role/{id}")
     public UpdateMemberRoleResponse updateUserRole(@PathVariable UUID id, @RequestBody MemberRole role) {
         // 구현 로직
         return  memberCommandService.updateMemberRole(id, role);
     }
 
-    @PutMapping("/members/{id}/status")
+    @PutMapping("/members/status/{id}")
     public ChangeStatusResponse updateUserStatus(@PathVariable UUID id, @RequestBody MemberStatus status) {
         // 구현 로직
         return  memberCommandService.changeMemberStatus(id, status);
     }
 
-    @PutMapping("/members/{id}/password")
+    @PutMapping("/members/password/{id}")
     public UpdatePasswordResponse updatePassword(@PathVariable UUID id,
                                                                @RequestBody UpdatePasswordRequest request) {
         return memberCommandService.updatePassword(id, request);
