@@ -42,6 +42,7 @@ public class MemberCommandDto {
     }
 
     @Builder
+    @Getter
     public static class UpdateMemberRoleResponse {
         Boolean success;
     }

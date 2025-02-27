@@ -25,7 +25,6 @@ public class MemberQueryDto {
         private String tel;
         private MemberRole role;
         private MemberStatus status;
-        boolean success;
     }
 
     @Builder
@@ -37,7 +36,6 @@ public class MemberQueryDto {
         private String tel;
         private MemberRole role;
         private MemberStatus status;
-        boolean success;
     }
 
 }

@@ -9,6 +9,8 @@ import org.orderhub.pr.auth.dto.MemberCommandDto.*;
 
 import java.util.UUID;
 
+// TODO jwt 적용
+// TODO 권한 로직 적용
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
