@@ -49,19 +49,15 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     public ChangeStatusResponse changeMemberStatus(UUID id, MemberStatus newStatus) {
         Member member = memberQueryService.findMemberEntityById(id);
-
         member.updateMemberStatus(newStatus);
-//        memberCommandRepository.save(member);
 
-        return ChangeStatusResponse.builder().success(true).build();
+        return UpdateStatusResponse.builder().success(true).build();
     }
 
     @Override
     public UpdateMemberRoleResponse updateMemberRole(UUID id, MemberRole newRole) {
         Member member = memberQueryService.findMemberEntityById(id);
-
         member.updateMemberRole(newRole);
-//        memberCommandRepository.save(member);
 
         return UpdateMemberRoleResponse.builder().success(true).build();
     }
