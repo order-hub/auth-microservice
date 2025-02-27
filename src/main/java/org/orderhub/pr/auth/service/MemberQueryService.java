@@ -22,6 +22,5 @@ public interface MemberQueryService {
 
     boolean existsByUsername(String username);
     boolean existsByTel(String tel);
-    boolean existsById(UUID id);
 
 }

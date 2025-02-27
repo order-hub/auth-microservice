@@ -52,14 +52,5 @@ public class MemberQueryApi {
         return memberQueryService.findByRole(role);
     }
 
-    @GetMapping("/exists/username/{username}")
-    public boolean checkUsernameExists(@PathVariable String username) {
-        return memberQueryService.existsByUsername(username);
-    }
-
-    @GetMapping("/exists/id/{id}")
-    public boolean checkMemberExists(@PathVariable UUID id) {
-        return memberQueryService.existsById(id);
-    }
 }
 

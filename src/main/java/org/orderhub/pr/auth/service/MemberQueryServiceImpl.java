@@ -74,11 +74,6 @@ public class MemberQueryServiceImpl implements MemberQueryService {
         return memberQueryRepository.existsByTel(tel);
     }
 
-    @Override
-    public boolean existsById(UUID id) {
-        return memberQueryRepository.existsById(id);
-    }
-
     private FindMemberByIdResponse convertToFindMemberByIdResponse(Member member) {
         return FindMemberByIdResponse.builder()
                 .id(member.getId())
