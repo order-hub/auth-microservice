@@ -10,7 +10,7 @@ public interface MemberCommandService {
 
     SignUpResponse signUp(SignUpRequest request);
 
-    ChangeStatusResponse changeMemberStatus(UUID id, MemberStatus status);
+    UpdateStatusResponse updateMemberStatus(UUID id, MemberStatus status);
 
     UpdateMemberRoleResponse updateMemberRole(UUID id, MemberRole newRole);
 

@@ -47,7 +47,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public ChangeStatusResponse changeMemberStatus(UUID id, MemberStatus newStatus) {
+    public UpdateStatusResponse updateMemberStatus(UUID id, MemberStatus newStatus) {
         Member member = memberQueryService.findMemberEntityById(id);
         member.updateMemberStatus(newStatus);
 

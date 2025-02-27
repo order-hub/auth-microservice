@@ -68,7 +68,7 @@ public class ChangeMemberTests {
         MemberStatus newStatus = MemberStatus.ACTIVE;
 
         // when
-        memberCommandService.changeMemberStatus(memberId, newStatus);
+        memberCommandService.updateMemberStatus(memberId, newStatus);
 
         // then
         assertEquals("회원 상태가 변경되어야 합니다.", newStatus.name(), existingMember.getStatus().name());

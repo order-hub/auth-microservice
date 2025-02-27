@@ -30,9 +30,9 @@ public class MemberCommandApi {
     }
 
     @PutMapping("/members/status/{id}")
-    public ChangeStatusResponse updateUserStatus(@PathVariable UUID id, @RequestBody MemberStatus status) {
+    public UpdateStatusResponse updateUserStatus(@PathVariable UUID id, @RequestBody MemberStatus status) {
         // 구현 로직
-        return  memberCommandService.changeMemberStatus(id, status);
+        return  memberCommandService.updateMemberStatus(id, status);
     }
 
     @PutMapping("/members/password/{id}")

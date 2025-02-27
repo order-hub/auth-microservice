@@ -37,7 +37,7 @@ public class MemberCommandDto {
 
 
     @Builder
-    public static class ChangeStatusResponse {
+    public static class UpdateStatusResponse {
         Boolean success;
     }
 
@@ -61,11 +61,13 @@ public class MemberCommandDto {
     }
 
     @Builder
+    @Getter
     public static class UpdatePasswordResponse {
         Boolean success;
     }
 
     @Builder
+    @Getter
     public static class DeleteMemberResponse {
         Boolean success;
     }
