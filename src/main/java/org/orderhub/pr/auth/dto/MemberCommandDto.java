@@ -36,13 +36,14 @@ public class MemberCommandDto {
     }
 
 
+    @Getter
     @Builder
     public static class UpdateStatusResponse {
         Boolean success;
     }
 
-    @Builder
     @Getter
+    @Builder
     public static class UpdateMemberRoleResponse {
         Boolean success;
     }
