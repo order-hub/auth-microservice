@@ -2,10 +2,7 @@ package org.orderhub.pr.auth.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import org.orderhub.pr.auth.domain.MemberStatus;
+import lombok.*;
 
 import static org.orderhub.pr.policy.Accounts.Validation.*;
 import static org.orderhub.pr.system.exception.auth.ValidationMessage.*;
@@ -38,10 +35,6 @@ public class MemberCommandDto {
         Boolean success;
     }
 
-    @Data
-    public static class ChangeStatusRequest {
-        private MemberStatus memberStatus;
-    }
 
     @Builder
     public static class ChangeStatusResponse {
@@ -51,6 +44,19 @@ public class MemberCommandDto {
     @Builder
     public static class UpdateMemberRoleResponse {
         Boolean success;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdatePasswordRequest {
+        @NotEmpty(message = "현재 비밀번호는 필수 입력값입니다.")
+        String currentPassword;
+
+        @NotEmpty(message = "새 비밀번호는 필수 입력값입니다.")
+        @Pattern(regexp = PASSWORD, message = PASSWORD_MESSAGE)
+        String newPassword;
+
     }
 
     @Builder

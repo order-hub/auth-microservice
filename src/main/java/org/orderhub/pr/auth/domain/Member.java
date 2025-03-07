@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.time.Instant;
 import java.util.UUID;
 
@@ -48,4 +47,20 @@ public class Member {
     @Builder.Default
     @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     private Instant updatedAt = Instant.now();
+
+    public void updateMemberStatus(MemberStatus newStatus) {
+        this.status = newStatus;
+    }
+
+    public void updateMemberRole(MemberRole newRole) {
+        this.role = newRole;
+    }
+
+    public void updateMemberPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    public void deleteMember() {
+        this.status = MemberStatus.DELETED;
+    }
 }
