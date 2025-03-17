@@ -38,3 +38,7 @@ out/
 
 ### env ###
 /src/main/resources/properties/env.yml
+
+### Key ###
+privateKey.pem
+publicKey.pem
