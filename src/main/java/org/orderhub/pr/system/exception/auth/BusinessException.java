@@ -1,4 +1,4 @@
-package org.orderhub.pr.auth.exception;
+package org.orderhub.pr.system.exception.auth;
 
 public class BusinessException extends RuntimeException{
     public BusinessException(String message) {

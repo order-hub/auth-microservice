@@ -1,4 +1,4 @@
-package org.orderhub.pr.auth.exception;
+package org.orderhub.pr.system.exception.auth;
 
 import lombok.NoArgsConstructor;
 

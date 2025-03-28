@@ -1,8 +1,7 @@
-package org.orderhub.pr.auth.exception;
+package org.orderhub.pr.system.exception.auth;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.orderhub.pr.system.exception.auth.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +33,20 @@ public class GlobalExceptionHandler {
         log.warn("🚫 UnauthorizedException: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), ex.getMessage()));
+    }
+
+    // 비밀번호 불일치 예외 처리
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidPasswordException(InvalidPasswordException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    // 직책 유효성 검사 예외 처리
+    @ExceptionHandler(InvalidMemberRoleException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidMemberRoleException(InvalidMemberRoleException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     // ❌ 기타 예상치 못한 예외 (500)

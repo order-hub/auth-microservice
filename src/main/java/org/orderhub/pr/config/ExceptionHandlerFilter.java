@@ -11,7 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static org.orderhub.pr.auth.exception.ExceptionMessage.INVALID_JWT;
+import static org.orderhub.pr.system.exception.auth.ExceptionMessage.INVALID_JWT;
 
 @Slf4j
 @WebFilter(urlPatterns = "/*")

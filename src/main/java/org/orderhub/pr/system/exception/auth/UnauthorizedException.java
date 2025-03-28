@@ -1,4 +1,4 @@
-package org.orderhub.pr.auth.exception;
+package org.orderhub.pr.system.exception.auth;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
