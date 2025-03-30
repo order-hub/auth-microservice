@@ -1,6 +1,5 @@
 package org.orderhub.pr.auth.service;
 
-import org.orderhub.pr.auth.domain.MemberStatus;
 import org.orderhub.pr.auth.dto.MemberCommandDto.*;
 
 import java.util.UUID;
