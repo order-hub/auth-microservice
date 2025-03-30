@@ -125,10 +125,7 @@ public class JwtProviderTest {
         // 1. 엑세스 토큰 생성
         String accessToken = jwtGenerator.generateAccessToken(privateKey, ACCESS_EXPIRATION, member);
 
-        // 2. 리프레시 토큰 생성
-        String refreshToken = jwtGenerator.generateRefreshToken(privateKey, REFRESH_EXPIRATION, member);
-
-        // 3. 만료 시간 확인 (엑세스 토큰은 1시간 후, 리프레시 토큰은 7일 후)
+        // 2. 만료 시간 확인 (엑세스 토큰은 1시간 후, 리프레시 토큰은 7일 후)
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(publicKey)  // 공개 키로 검증
                 .build()
