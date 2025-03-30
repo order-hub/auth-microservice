@@ -10,10 +10,8 @@ import org.orderhub.pr.jwt.domain.TokenStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.security.PublicKey;
 import java.util.Arrays;
-import java.util.Base64;
 
 import static org.orderhub.pr.system.exception.auth.ExceptionMessage.INVALID_EXPIRED_JWT;
 import static org.orderhub.pr.system.exception.auth.ExceptionMessage.INVALID_JWT;
@@ -24,7 +22,7 @@ import static org.orderhub.pr.system.exception.auth.ExceptionMessage.INVALID_JWT
 public class JwtUtil {
     private final PublicKey publicKey;
 
-    public JwtUtil(RsaKeyLoader rsaKeyLoader) throws Exception {
+    public JwtUtil(RsaKeyLoader rsaKeyLoader) {
         try {
             this.publicKey = rsaKeyLoader.loadPublicKey();
         } catch (Exception e) {
@@ -58,15 +56,6 @@ public class JwtUtil {
                 .map(Cookie::getValue)
                 .orElse("");
     }
-
-    private String encodeToBase64(String secretKey) {
-        return Base64.getEncoder().encodeToString(secretKey.getBytes());
-    }
-
-//    public Key getSigningKey(String secretKey) {
-//        String encodedKey = encodeToBase64(secretKey);
-//        return Keys.hmacShaKeyFor(encodedKey.getBytes(StandardCharsets.UTF_8));
-//    }
 
     public Cookie resetToken(JwtRule tokenPrefix) {
         Cookie cookie = new Cookie(tokenPrefix.getValue(), null);
