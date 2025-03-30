@@ -66,7 +66,6 @@ public class LoginTest {
     @Test
     public void testLoginFailure() throws JsonProcessingException {
         // 잘못된 비밀번호로 로그인 시도
-        String inputUsername = "testUser";
         String inputPassword = "wrongPassword";
 
         // 비밀번호 불일치 검사
