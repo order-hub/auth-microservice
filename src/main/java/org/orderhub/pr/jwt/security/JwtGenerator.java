@@ -3,6 +3,7 @@ package org.orderhub.pr.jwt.security;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
@@ -26,18 +27,6 @@ public class JwtGenerator {
     public void init() {
         objectMapper.registerModule(new JavaTimeModule());
     }
-
-//    public String generateAccessToken(final PrivateKey privateKey, final long ACCESS_EXPIRATION, Member member) throws JsonProcessingException {
-//        long now = System.currentTimeMillis();
-//
-//        return Jwts.builder()
-//                .setHeader(HEADER)
-//                .setClaims(createClaims(member))
-//                .setSubject(String.valueOf(member.getId()))
-//                .setExpiration(new Date(now + ACCESS_EXPIRATION))
-//                .signWith(privateKey, SignatureAlgorithm.RS256)
-//                .compact();
-//    }
 
     public String generateAccessToken(PrivateKey privateKey, long expiration, Member member) throws JsonProcessingException {
         Instant now = Instant.now();
@@ -67,58 +56,24 @@ public class JwtGenerator {
                 .compact();
     }
 
-    // 헤더 생성
-//    private Map<String, Object> createHeader() {
-//        Map<String, Object> header = new HashMap<>();
-//        header.put("typ", "JWT");
-//        header.put("alg", "RS256");
-//        return header;
-//    }
-
-    // 상수로 변경
     private static final Map<String, Object> HEADER = Map.of(
             "typ", "JWT",
             "alg", "RS256"
     );
 
-//    // 페이로드 생성
-//    private Map<String, Object> createClaims(Member member) throws JsonProcessingException {
-//        Map<String, Object> claims = new HashMap<>();
-//        claims.put("memberId", member.getId());
-//        claims.put("username", member.getUsername());
-//        claims.put("realName", member.getRealName());
-//        claims.put("role", member.getRole().name());
-//        claims.put("status", member.getStatus().name());
-//
-//        String createdAtString = null;
-//        if (member.getCreatedAt() != null) {
-//            createdAtString = objectMapper.writeValueAsString(member.getCreatedAt());
-//            if (createdAtString != null) {
-//                createdAtString = createdAtString.replace("\"", "");
-//            }
-//        }
-//
-//        if (createdAtString == null) {
-//            createdAtString = "N/A";
-//        }
-//
-//        claims.put("createdAt", createdAtString);
-//        return claims;
-//    }
+    private Map<String, Object> createClaims(Member member) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("memberId", member.getId());
+        claims.put("username", member.getUsername());
+        claims.put("realName", member.getRealName());
+        claims.put("role", member.getRole().name());
+        claims.put("status", member.getStatus().name());
 
-private Map<String, Object> createClaims(Member member) {
-    Map<String, Object> claims = new HashMap<>();
-    claims.put("memberId", member.getId());
-    claims.put("username", member.getUsername());
-    claims.put("realName", member.getRealName());
-    claims.put("role", member.getRole().name());
-    claims.put("status", member.getStatus().name());
+        String createdAtString = member.getCreatedAt() != null
+                ? member.getCreatedAt().toString()  // createdAt을 String으로 변환
+                : "N/A";  // 값이 없으면 "N/A"로 설정
 
-    String createdAtString = member.getCreatedAt() != null
-            ? member.getCreatedAt().toString()  // createdAt을 String으로 변환
-            : "N/A";  // 값이 없으면 "N/A"로 설정
-
-    claims.put("createdAt", createdAtString);
-    return claims;
-}
+        claims.put("createdAt", createdAtString);
+        return claims;
+    }
 }
