@@ -1,6 +1,5 @@
 package org.orderhub.pr.auth.service;
 
-import org.orderhub.pr.auth.domain.MemberRole;
 import org.orderhub.pr.auth.domain.MemberStatus;
 import org.orderhub.pr.auth.dto.MemberCommandDto.*;
 
@@ -10,9 +9,9 @@ public interface MemberCommandService {
 
     SignUpResponse signUp(SignUpRequest request);
 
-    UpdateStatusResponse updateMemberStatus(UUID id, MemberStatus status);
+    UpdateMemberStatusResponse updateMemberStatus(UUID id, UpdateMemberStatusRequest request);
 
-    UpdateMemberRoleResponse updateMemberRole(UUID id, MemberRole newRole);
+    UpdateMemberRoleResponse updateMemberRole(UUID id, UpdateMemberRoleRequest request);
 
     UpdatePasswordResponse updatePassword(UUID id, UpdatePasswordRequest request);
 
