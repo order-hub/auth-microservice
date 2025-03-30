@@ -1,10 +1,12 @@
 package org.orderhub.pr.jwt.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.orderhub.pr.auth.domain.Member;
 import org.orderhub.pr.system.exception.auth.BusinessException;
@@ -55,12 +57,6 @@ public class JwtService {
         this.privateKey = rsaKeyLoader.loadPrivateKey();
         this.publicKey = rsaKeyLoader.loadPublicKey();
     }
-
-//    public void validateUser(Member requestUser) {
-//        if (requestUser.getRole() == MemberRole.NOT_REGISTERED) {
-//            throw new BusinessException(INVALID_USER_ERROR);
-//        }
-//    }
 
     public String generateAccessToken(HttpServletResponse response, Member requestMember) throws JsonProcessingException {
         String accessToken = jwtGenerator.generateAccessToken(privateKey, ACCESS_EXPIRATION, requestMember);
@@ -135,6 +131,7 @@ public class JwtService {
         // Step 4: 유효성 검사 통과 && 토큰 매칭 여부가 true일 경우에만 유효한 리프레시 토큰으로 간주
         return isRefreshValid && isTokenMatched;
     }
+
     public Authentication getAuthentication(String token) {
         UserDetails principal = customUserDetailsService.loadUserByUsername(getUserPk(token, publicKey));
         return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
