@@ -1,12 +1,10 @@
 package org.orderhub.pr.jwt.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.orderhub.pr.auth.domain.Member;
 import org.orderhub.pr.system.exception.auth.BusinessException;
@@ -95,7 +93,7 @@ public class JwtService {
 
     public String resolveTokenFromHeaderOrCookie(HttpServletRequest request, JwtRule tokenPrefix) {
         // 1. 먼저 Authorization 헤더에서 토큰 확인 (엑세스 토큰의 경우)
-        String headerToken = getTokenFromHeader(request, tokenPrefix);
+        String headerToken = getTokenFromHeader(request);
         if (headerToken != null) {
             return headerToken;
         }
@@ -105,7 +103,7 @@ public class JwtService {
     }
 
     // 헤더에서 토큰을 확인하는 메서드 (엑세스 토큰만 처리)
-    private String getTokenFromHeader(HttpServletRequest request, JwtRule tokenPrefix) {
+    private String getTokenFromHeader(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             return authorizationHeader.substring("Bearer ".length()).trim();
