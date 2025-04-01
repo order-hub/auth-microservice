@@ -1,20 +1,18 @@
 package org.orderhub.pr.auth.service;
 
 import lombok.RequiredArgsConstructor;
+import org.orderhub.pr.auth.aop.annotation.AdminOnly;
 import org.orderhub.pr.auth.domain.Member;
-import org.orderhub.pr.auth.domain.MemberRole;
-import org.orderhub.pr.auth.domain.MemberStatus;
 import org.orderhub.pr.auth.dto.MemberCommandDto.*;
+import org.orderhub.pr.system.exception.auth.InvalidPasswordException;
 import org.orderhub.pr.auth.repository.MemberCommandRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.UUID;
 
-import static org.orderhub.pr.auth.exception.ExceptionMessage.*;
+import static org.orderhub.pr.system.exception.auth.ExceptionMessage.*;
 
-// TODO 권한별 로직 추가
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -47,21 +45,19 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public ChangeStatusResponse changeMemberStatus(UUID id, MemberStatus newStatus) {
-        Member member = memberQueryService.findMemberEntityById(id);
+    @AdminOnly
+    public UpdateMemberStatusResponse updateMemberStatus(UUID id, UpdateMemberStatusRequest request) {
+        Member targetMember = memberQueryService.findMemberEntityById(id);
+        targetMember.updateMemberStatus(request.getStatus());
 
-        member.updateMemberStatus(newStatus);
-//        memberCommandRepository.save(member);
-
-        return ChangeStatusResponse.builder().success(true).build();
+        return UpdateMemberStatusResponse.builder().success(true).build();
     }
 
     @Override
-    public UpdateMemberRoleResponse updateMemberRole(UUID id, MemberRole newRole) {
-        Member member = memberQueryService.findMemberEntityById(id);
-
-        member.updateMemberRole(newRole);
-//        memberCommandRepository.save(member);
+    @AdminOnly
+    public UpdateMemberRoleResponse updateMemberRole(UUID id, UpdateMemberRoleRequest request) {
+        Member targetMember = memberQueryService.findMemberEntityById(request.getTargetId());
+        targetMember.updateMemberRole(request.getRole());
 
         return UpdateMemberRoleResponse.builder().success(true).build();
     }
@@ -71,12 +67,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         Member member = memberQueryService.findMemberEntityById(id);
 
         if (!passwordEncoder.matches(request.getCurrentPassword(), member.getPassword())) {
-            throw new IllegalArgumentException(INVALID_PASSWORD_ERROR);
+            throw new InvalidPasswordException(INVALID_CHK_PASSWORD_NEW_PASSWORD_ERROR);
         }
 
         String encodedPassword = passwordEncoder.encode(request.getNewPassword());
         member.updateMemberPassword(encodedPassword);
-        memberCommandRepository.save(member);
 
         return UpdatePasswordResponse.builder().success(true).build();
     }
@@ -84,9 +79,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     public DeleteMemberResponse deleteMember(UUID id) {
         Member member = memberQueryService.findMemberEntityById(id);
-
         member.deleteMember();
-        memberCommandRepository.save(member);
 
         return DeleteMemberResponse.builder().success(true).build();
     }

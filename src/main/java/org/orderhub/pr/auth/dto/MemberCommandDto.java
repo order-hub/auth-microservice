@@ -1,8 +1,13 @@
 package org.orderhub.pr.auth.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import org.orderhub.pr.auth.domain.MemberRole;
+import org.orderhub.pr.auth.domain.MemberStatus;
+
+import java.util.UUID;
 
 import static org.orderhub.pr.policy.Accounts.Validation.*;
 import static org.orderhub.pr.system.exception.auth.ValidationMessage.*;
@@ -35,12 +40,31 @@ public class MemberCommandDto {
         Boolean success;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateMemberStatusRequest {
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
+        UUID targetId;
+        MemberStatus status;
+    }
 
+    @Getter
     @Builder
-    public static class ChangeStatusResponse {
+    public static class UpdateMemberStatusResponse {
         Boolean success;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateMemberRoleRequest {
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
+        UUID targetId;
+        MemberRole role;
+    }
+
+    @Getter
     @Builder
     public static class UpdateMemberRoleResponse {
         Boolean success;
@@ -60,11 +84,13 @@ public class MemberCommandDto {
     }
 
     @Builder
+    @Getter
     public static class UpdatePasswordResponse {
         Boolean success;
     }
 
     @Builder
+    @Getter
     public static class DeleteMemberResponse {
         Boolean success;
     }

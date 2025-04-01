@@ -59,19 +59,16 @@ public class ChangeMemberTests {
 
     @Test
     @DisplayName("기존 회원의 상태 변경 테스트")
-    void testUpdateMemberStatus() {
+    void testUpdateMemberStatus(UpdateMemberStatusRequest request) throws Exception {
 
         // memberQueryService에서 findMemberById가 기존 회원을 반환하도록 설정
         when(memberQueryService.findMemberEntityById(memberId)).thenReturn(existingMember);
 
-        // 상태 변경 요청
-        MemberStatus newStatus = MemberStatus.ACTIVE;
-
         // when
-        memberCommandService.changeMemberStatus(memberId, newStatus);
+        memberCommandService.updateMemberStatus(memberId, request);
 
         // then
-        assertEquals("회원 상태가 변경되어야 합니다.", newStatus.name(), existingMember.getStatus().name());
+        assertEquals("회원 상태가 변경되어야 합니다.", request.getStatus().name(), existingMember.getStatus().name());
 
         // memberCommandRepository.save 호출 여부 확인
         verify(memberCommandRepository, times(1)).save(existingMember);

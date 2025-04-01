@@ -11,11 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.orderhub.pr.auth.exception.ExceptionMessage.*;
+import static org.orderhub.pr.system.exception.auth.ExceptionMessage.MEMBER_NOT_FOUND_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +31,17 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     }
 
     @Override
-    public Optional<FindMemberByIdResponse> findMemberById(UUID id) {
-        return memberQueryRepository.findById(id).map(this::convertToFindMemberByIdResponse);
+    public FindMemberByIdResponse findMemberById(UUID id) {
+        Member member = memberQueryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND_ERROR));
+        return convertToFindMemberByIdResponse(member);
+    }
+
+    @Override
+    public FindMemberByUsernameResponse findByUsername(String username) {
+        Member member = memberQueryRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND_ERROR));
+        return convertToFindMemberByUsernameResponse(member);
     }
 
     @Override
@@ -59,12 +67,6 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     }
 
     @Override
-    public Optional<FindMemberByUsernameResponse> findByUsername(String username) {
-        return memberQueryRepository.findByUsername(username).map(this::convertToFindMemberByUsernameResponse);
-    }
-
-    // 존재 여부 체크
-    @Override
     public boolean existsByUsername(String username) {
         return memberQueryRepository.existsByUsername(username);
     }
@@ -72,11 +74,6 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     @Override
     public boolean existsByTel(String tel) {
         return memberQueryRepository.existsByTel(tel);
-    }
-
-    @Override
-    public boolean existsById(UUID id) {
-        return memberQueryRepository.existsById(id);
     }
 
     private FindMemberByIdResponse convertToFindMemberByIdResponse(Member member) {
@@ -90,7 +87,6 @@ public class MemberQueryServiceImpl implements MemberQueryService {
                 .build();
     }
 
-
     private FindMemberByUsernameResponse convertToFindMemberByUsernameResponse(Member member) {
         return FindMemberByUsernameResponse.builder()
                 .id(member.getId())
@@ -101,4 +97,5 @@ public class MemberQueryServiceImpl implements MemberQueryService {
                 .status(member.getStatus())
                 .build();
     }
+
 }

@@ -23,8 +23,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.orderhub.pr.auth.exception.ExceptionMessage.DUPLICATE_TEL_ERROR;
-import static org.orderhub.pr.auth.exception.ExceptionMessage.DUPLICATE_USERNAME_ERROR;
+import static org.orderhub.pr.system.exception.auth.ExceptionMessage.DUPLICATE_TEL_ERROR;
+import static org.orderhub.pr.system.exception.auth.ExceptionMessage.DUPLICATE_USERNAME_ERROR;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +33,6 @@ class SignUpTest {
 
     @Mock
     private MemberCommandRepository memberCommandRepository;
-
 
     @Mock
     private PasswordEncoder passwordEncoder;
