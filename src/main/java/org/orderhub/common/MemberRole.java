@@ -1,4 +1,4 @@
-package org.orderhub.pr.auth.domain;
+package org.orderhub.common;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

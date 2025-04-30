@@ -5,7 +5,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.orderhub.pr.auth.domain.Member;
-import org.orderhub.pr.auth.domain.MemberRole;
+import org.orderhub.common.MemberRole;
 import org.orderhub.pr.system.exception.auth.UnauthorizedException;
 import org.orderhub.pr.auth.service.MemberQueryService;
 import org.springframework.stereotype.Component;

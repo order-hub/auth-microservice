@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
-import org.orderhub.pr.auth.domain.MemberRole;
-import org.orderhub.pr.auth.domain.MemberStatus;
+import org.orderhub.common.MemberRole;
+import org.orderhub.common.MemberStatus;
 
 import java.util.UUID;
 

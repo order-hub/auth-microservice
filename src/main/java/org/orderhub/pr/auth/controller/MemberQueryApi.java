@@ -1,8 +1,8 @@
 package org.orderhub.pr.auth.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.orderhub.pr.auth.domain.MemberRole;
-import org.orderhub.pr.auth.domain.MemberStatus;
+import org.orderhub.common.MemberRole;
+import org.orderhub.common.MemberStatus;
 import org.orderhub.pr.auth.dto.MemberQueryDto.FindMemberByIdResponse;
 import org.orderhub.pr.auth.dto.MemberQueryDto.FindMemberByUsernameResponse;
 import org.orderhub.pr.auth.service.MemberQueryService;

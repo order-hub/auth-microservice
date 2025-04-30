@@ -1,8 +1,8 @@
 package org.orderhub.pr.auth.service;
 
 import org.orderhub.pr.auth.domain.Member;
-import org.orderhub.pr.auth.domain.MemberRole;
-import org.orderhub.pr.auth.domain.MemberStatus;
+import org.orderhub.common.MemberRole;
+import org.orderhub.common.MemberStatus;
 import org.orderhub.pr.auth.dto.MemberQueryDto.*;
 
 import java.util.List;

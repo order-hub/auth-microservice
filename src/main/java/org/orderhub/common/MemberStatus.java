@@ -1,4 +1,4 @@
-package org.orderhub.pr.auth.domain;
+package org.orderhub.common;
 
 public enum MemberStatus {
     ACTIVE,     // 모든 서비스를 이용할 수 있는 정상적인 회원 상태

@@ -12,8 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.orderhub.pr.auth.domain.Member;
-import org.orderhub.pr.auth.domain.MemberRole;
-import org.orderhub.pr.auth.domain.MemberStatus;
+import org.orderhub.common.MemberRole;
+import org.orderhub.common.MemberStatus;
 import org.orderhub.pr.jwt.security.JwtGenerator;
 import org.orderhub.pr.jwt.security.RsaKeyLoader;
 

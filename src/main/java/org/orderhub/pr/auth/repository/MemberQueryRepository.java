@@ -1,8 +1,8 @@
 package org.orderhub.pr.auth.repository;
 
 import org.orderhub.pr.auth.domain.Member;
-import org.orderhub.pr.auth.domain.MemberRole;
-import org.orderhub.pr.auth.domain.MemberStatus;
+import org.orderhub.common.MemberRole;
+import org.orderhub.common.MemberStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
