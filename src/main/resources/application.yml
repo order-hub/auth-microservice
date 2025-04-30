@@ -7,16 +7,14 @@ server:
 spring:
   application:
     name: pr
-  security:
-    user:
-      password: ${SECURITY_PASSWORD}
   datasource:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
-    hibernate:
+    properties:
+      hibernate:
         ddl-auto: update
     open-in-view: false
   data:
@@ -29,6 +27,19 @@ spring:
           max-idle: 300
           min-idle: 100
       timeout: 5000
+  kafka:
+    bootstrap-servers: ${KAFKA_URL}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: true
+    consumer:
+      group-id: board-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
 jwt:
   access-expiration: 600000  # 10 min: 10min * 60 sec * 1000 millisecond
   refresh-expiration: 10800000  # 10800000 3 hours: 3hours * 60min * 60sec * 1000 millisecond

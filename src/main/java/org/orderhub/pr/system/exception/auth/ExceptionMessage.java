@@ -14,7 +14,6 @@ public class ExceptionMessage {
 
 
     public static final String MEMBER_NOT_FOUND_ERROR = "멤버를 찾을 수 없습니다.";
-    public static final String INVALID_USER_ERROR = "유효하지 않은 멤버입니다.";
     public static final String UNAUTHORIZED_ACCESS_ERROR = "유효하지 않은 접근입니다. 해당 멤버에게는 권한이 없습니다.";
     public static final String NO_AUTHENTICATION_IN_SECURITY_CONTEXT_ERROR = "인증되지 않은 사용자 접근 입니다.";
     public static final String MEMBER_BLOCKED_ERROR = "계정이 차단되었습니다. 자세한 내용은 관리자에게 문의하세요.";
