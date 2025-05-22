@@ -1,6 +1,7 @@
 package org.orderhub.pr.config.resolver;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.orderhub.pr.jwt.security.JwtRule;
 import org.orderhub.pr.jwt.security.JwtService;
@@ -26,9 +27,9 @@ public class CurrentMemberIdArgumentResolver implements HandlerMethodArgumentRes
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter,
+    public Object resolveArgument(@NonNull MethodParameter parameter,
                                   ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest,
+                                  @NonNull NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
         String accessToken = jwtService.resolveTokenFromHeaderOrCookie(request, JwtRule.ACCESS_PREFIX);
