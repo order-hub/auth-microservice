@@ -30,7 +30,7 @@ public class CurrentMemberIdArgumentResolver implements HandlerMethodArgumentRes
     public Object resolveArgument(@NonNull MethodParameter parameter,
                                   ModelAndViewContainer mavContainer,
                                   @NonNull NativeWebRequest webRequest,
-                                  WebDataBinderFactory binderFactory) throws Exception {
+                                  WebDataBinderFactory binderFactory) {
         HttpServletRequest request = ((ServletWebRequest) webRequest).getRequest();
         String accessToken = jwtService.resolveTokenFromHeaderOrCookie(request, JwtRule.ACCESS_PREFIX);
 
