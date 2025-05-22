@@ -21,21 +21,10 @@ public class MemberCommandApi {
     private final MemberCommandService memberCommandService;
     private final AuthService authService;
 
-    // 프론트 측 JWT 발급 요청 대비용 API
-//    @PostMapping
-//    public ResponseEntity<SingleResponse<AuthResponse>> generateToken(HttpServletResponse response,
-//                                                                      @RequestBody TokenRequest tokenRequest) throws JsonProcessingException {
-//        AuthResponse authResponse = authService.generateTokens(tokenRequest, response);
-//
-//        return ResponseEntity.ok().body(
-//                new SingleResponse<>(SUCCESS.getStatus(), SUCCESS.getMessage(), authResponse)
-//        );
-//    }
-
     @PostMapping("/signup")
-    public SignUpResponse signUp(@RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<ApiResponse<SimpleSuccessResponse>> signUp(@RequestBody SignUpRequest signUpRequest) {
 
-        return memberCommandService.signUp(signUpRequest);
+        return ResponseEntity.ok(memberCommandService.signUp(signUpRequest));
     }
 
     // 로그인 처리
@@ -51,25 +40,25 @@ public class MemberCommandApi {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/members/role/{id}")
-    public UpdateMemberRoleResponse updateUserRole(@PathVariable UUID id,
+    @PutMapping("/members/role")
+    public ResponseEntity<ApiResponse<SimpleSuccessResponse>> updateUserRole(@CurrentMemberId UUID id,
                                                    @RequestBody UpdateMemberRoleRequest request) {
-        return  memberCommandService.updateMemberRole(id, request);
+        return ResponseEntity.ok(memberCommandService.updateMemberRole(id, request));
     }
 
-    @PutMapping("/members/status/{id}")
-    public UpdateMemberStatusResponse updateUserStatus(@PathVariable UUID id, @RequestBody UpdateMemberStatusRequest request) {
-        return  memberCommandService.updateMemberStatus(id, request);
+    @PutMapping("/members/status")
+    public ResponseEntity<ApiResponse<SimpleSuccessResponse>> updateUserStatus(@CurrentMemberId UUID id, @RequestBody UpdateMemberStatusRequest request) {
+        return ResponseEntity.ok(memberCommandService.updateMemberStatus(id, request));
     }
 
-    @PutMapping("/members/password/{id}")
-    public UpdatePasswordResponse updatePassword(@PathVariable UUID id,
+    @PutMapping("/members/password")
+    public ResponseEntity<ApiResponse<SimpleSuccessResponse>> updatePassword(@CurrentMemberId UUID id,
                                                                @RequestBody UpdatePasswordRequest request) {
-        return memberCommandService.updatePassword(id, request);
+        return ResponseEntity.ok(memberCommandService.updatePassword(id, request));
     }
 
     @DeleteMapping("/members/{id}")
-    public DeleteMemberResponse deleteUser(@PathVariable UUID id) {
-        return memberCommandService.deleteMember(id);
+    public ResponseEntity<ApiResponse<SimpleSuccessResponse>> deleteUser(@PathVariable UUID id) {
+        return ResponseEntity.ok(memberCommandService.deleteMember(id));
     }
 }

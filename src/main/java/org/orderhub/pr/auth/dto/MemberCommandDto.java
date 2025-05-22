@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.orderhub.common.MemberRole;
 import org.orderhub.common.MemberStatus;
+import org.springframework.http.HttpStatus;
 
 import java.util.UUID;
 
@@ -59,12 +60,6 @@ public class MemberCommandDto {
         MemberStatus status;
     }
 
-    @Getter
-    @Builder
-    public static class UpdateMemberStatusResponse {
-        Boolean success;
-    }
-
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -78,6 +73,9 @@ public class MemberCommandDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdatePasswordRequest {
+        @NotEmpty(message = "대상 id를 입력해주세요")
+        UUID targetId;
+
         @NotEmpty(message = "현재 비밀번호는 필수 입력값입니다.")
         String currentPassword;
 
