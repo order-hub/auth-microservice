@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
 import org.orderhub.pr.auth.domain.Member;
 import org.orderhub.pr.system.exception.auth.BusinessException;
 import org.orderhub.pr.jwt.repository.RedisTokenRepository;
@@ -142,6 +143,10 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public UUID getMemberIdFromAccessToken(String accessToken) {
+        return jwtUtil.getMemberIdFromToken(accessToken);
     }
 
     public UUID getIdentifierFromRefresh(String refreshToken) {

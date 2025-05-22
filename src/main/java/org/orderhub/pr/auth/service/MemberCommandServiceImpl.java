@@ -25,7 +25,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
-    public SignUpResponse signUp(SignUpRequest request) {
+    public ApiResponse<SimpleSuccessResponse> signUp(SignUpRequest request) {
         if (memberQueryService.existsByUsername(request.getUsername())) {
             throw new IllegalArgumentException(DUPLICATE_USERNAME_ERROR);
         }
@@ -57,14 +57,19 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         kafkaTemplate.send(topic, message);
 
-        return SignUpResponse.builder()
+        SimpleSuccessResponse data = SimpleSuccessResponse.builder().success(true).build();
+
+        return ApiResponse.<SimpleSuccessResponse>builder()
                 .success(true)
+                .data(data)
+                .message("회원 가입 성공")
+                .data(data)
                 .build();
     }
 
     @Override
     @AdminOnly
-    public UpdateMemberStatusResponse updateMemberStatus(UUID id, UpdateMemberStatusRequest request) {
+    public ApiResponse<SimpleSuccessResponse> updateMemberStatus(UUID id, UpdateMemberStatusRequest request) {
         Member targetMember = memberQueryService.findMemberEntityById(id);
         targetMember.updateMemberStatus(request.getStatus());
 
@@ -75,12 +80,19 @@ public class MemberCommandServiceImpl implements MemberCommandService {
                 .build();
 
         kafkaTemplate.send(topic, message);
-        return UpdateMemberStatusResponse.builder().success(true).build();
+        SimpleSuccessResponse data = SimpleSuccessResponse.builder().success(true).build();
+
+        return ApiResponse.<SimpleSuccessResponse>builder()
+                .success(true)
+                .data(data)
+                .message("상태 변경 성공")
+                .data(data)
+                .build();
     }
 
     @Override
     @AdminOnly
-    public UpdateMemberRoleResponse updateMemberRole(UUID id, UpdateMemberRoleRequest request) {
+    public ApiResponse<SimpleSuccessResponse> updateMemberRole(UUID id, UpdateMemberRoleRequest request) {
         Member targetMember = memberQueryService.findMemberEntityById(request.getTargetId());
         targetMember.updateMemberRole(request.getRole());
 
@@ -92,11 +104,17 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         kafkaTemplate.send(topic, message);
 
-        return UpdateMemberRoleResponse.builder().success(true).build();
+        SimpleSuccessResponse data = SimpleSuccessResponse.builder().success(true).build();
+        return ApiResponse.<SimpleSuccessResponse>builder()
+                .success(true)
+                .data(data)
+                .message("권한 변경 성공")
+                .data(data)
+                .build();
     }
 
     @Override
-    public UpdatePasswordResponse updatePassword(UUID id, UpdatePasswordRequest request) {
+    public ApiResponse<SimpleSuccessResponse> updatePassword(UUID id, UpdatePasswordRequest request) {
         Member member = memberQueryService.findMemberEntityById(id);
 
         if (!passwordEncoder.matches(request.getCurrentPassword(), member.getPassword())) {
@@ -114,11 +132,17 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         kafkaTemplate.send(topic, message);
 
-        return UpdatePasswordResponse.builder().success(true).build();
+        SimpleSuccessResponse data = SimpleSuccessResponse.builder().success(true).build();
+        return ApiResponse.<SimpleSuccessResponse>builder()
+                .success(true)
+                .data(data)
+                .message("비밀번호 변경 성공")
+                .data(data)
+                .build();
     }
 
     @Override
-    public DeleteMemberResponse deleteMember(UUID id) {
+    public ApiResponse<SimpleSuccessResponse> deleteMember(UUID id) {
         Member member = memberQueryService.findMemberEntityById(id);
         member.deleteMember();
 
@@ -129,6 +153,12 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         kafkaTemplate.send(topic, message);
 
-        return DeleteMemberResponse.builder().success(true).build();
+        SimpleSuccessResponse data = SimpleSuccessResponse.builder().success(true).build();
+        return ApiResponse.<SimpleSuccessResponse>builder()
+                .success(true)
+                .data(data)
+                .message("회원 삭제 성공")
+                .data(data)
+                .build();
     }
 }

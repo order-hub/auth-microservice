@@ -57,6 +57,23 @@ public class JwtUtil {
                 .orElse("");
     }
 
+    public UUID getMemberIdFromToken(String token) {
+        try {
+            String subject = Jwts.parserBuilder()
+                    .setSigningKey(publicKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject(); // subject에 memberId가 들어있다고 가정
+
+            return UUID.fromString(subject);
+        } catch (ExpiredJwtException e) {
+            return UUID.fromString(e.getClaims().getSubject()); // 만료된 경우에도 payload 접근 가능
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new BusinessException(INVALID_JWT);
+        }
+    }
+    
     public Cookie resetToken(JwtRule tokenPrefix) {
         Cookie cookie = new Cookie(tokenPrefix.getValue(), null);
         cookie.setMaxAge(0);

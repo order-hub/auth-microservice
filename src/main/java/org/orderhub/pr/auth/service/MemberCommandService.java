@@ -6,13 +6,13 @@ import java.util.UUID;
 
 public interface MemberCommandService {
 
-    SignUpResponse signUp(SignUpRequest request);
+    ApiResponse<SimpleSuccessResponse> signUp(SignUpRequest request);
 
-    UpdateMemberStatusResponse updateMemberStatus(UUID id, UpdateMemberStatusRequest request);
+    ApiResponse<SimpleSuccessResponse> updateMemberStatus(UUID id, UpdateMemberStatusRequest request);
 
-    UpdateMemberRoleResponse updateMemberRole(UUID id, UpdateMemberRoleRequest request);
+    ApiResponse<SimpleSuccessResponse> updateMemberRole(UUID id, UpdateMemberRoleRequest request);
 
-    UpdatePasswordResponse updatePassword(UUID id, UpdatePasswordRequest request);
+    ApiResponse<SimpleSuccessResponse> updatePassword(UUID id, UpdatePasswordRequest request);
 
-    DeleteMemberResponse deleteMember(UUID id);
+    ApiResponse<SimpleSuccessResponse> deleteMember(UUID id);
 }

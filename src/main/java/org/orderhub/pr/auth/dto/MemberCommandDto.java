@@ -36,8 +36,18 @@ public class MemberCommandDto {
 
     @Getter
     @Builder
-    public static class SignUpResponse {
-        Boolean success;
+    public static class SimpleSuccessResponse {
+        private Boolean success;
+    }
+
+
+    @Getter
+    @Builder
+    public static class ApiResponse<T> {
+        private boolean success;
+        private String message;
+        private HttpStatus status;
+        private T data;
     }
 
     @Data
@@ -64,12 +74,6 @@ public class MemberCommandDto {
         MemberRole role;
     }
 
-    @Getter
-    @Builder
-    public static class UpdateMemberRoleResponse {
-        Boolean success;
-    }
-
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -81,17 +85,5 @@ public class MemberCommandDto {
         @Pattern(regexp = PASSWORD, message = PASSWORD_MESSAGE)
         String newPassword;
 
-    }
-
-    @Builder
-    @Getter
-    public static class UpdatePasswordResponse {
-        Boolean success;
-    }
-
-    @Builder
-    @Getter
-    public static class DeleteMemberResponse {
-        Boolean success;
     }
 }
