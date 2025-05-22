@@ -5,6 +5,9 @@ server:
       charset: UTF-8
       force: true
 spring:
+  task:
+    execution:
+      type: virtual_thread
   application:
     name: pr
   datasource:
