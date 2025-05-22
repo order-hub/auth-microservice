@@ -10,7 +10,6 @@ import org.orderhub.pr.auth.repository.MemberQueryRepository;
 import org.orderhub.pr.jwt.dto.AuthResponse;
 import org.orderhub.pr.jwt.dto.LoginRequest;
 import org.orderhub.pr.jwt.dto.LogoutRequest;
-import org.orderhub.pr.jwt.dto.TokenRequest;
 import org.orderhub.pr.jwt.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,18 +46,5 @@ public class AuthService {
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND_ERROR));
         jwtService.logout(member,request, response);
     }
-
-    public AuthResponse generateTokens(TokenRequest tokenRequest, HttpServletResponse response) throws JsonProcessingException {
-        // 사용자 조회
-        Member member = memberQueryRepository.findById(tokenRequest.getId())
-                .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND_ERROR));
-
-        // JWT 발급 (액세스 토큰, 리프레시 토큰)
-        String accessToken = jwtService.generateAccessToken(response, member);
-        String refreshToken = jwtService.generateRefreshToken(response, member);
-
-        // 토큰을 포함한 인증 응답 반환
-        return new AuthResponse(accessToken, refreshToken);
-    }
-
+    
 }
