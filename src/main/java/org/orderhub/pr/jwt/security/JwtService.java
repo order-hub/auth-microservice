@@ -114,8 +114,16 @@ public class JwtService {
 
     public boolean validateAccessToken(String token) {
         TokenStatus tokenStatus = jwtUtil.getTokenStatus(token);
-        log.debug("Validating access token {}", tokenStatus);
-        return tokenStatus == TokenStatus.AUTHENTICATED;
+        if (tokenStatus != TokenStatus.AUTHENTICATED) {
+            throw new BusinessException(INVALID_JWT);
+        }
+
+        if (isTokenBlacklisted(token)) {
+            log.warn("Attempt to use blacklisted access token: {}", token);
+            throw new BusinessException(INVALID_JWT);
+        }
+
+        return true;
     }
 
     public boolean validateRefreshToken(String token, UUID memberId) {
@@ -163,13 +171,22 @@ public class JwtService {
         }
     }
 
-    public void logout(Member member, HttpServletResponse response) {
+    public void logout(Member member, HttpServletRequest request, HttpServletResponse response) {
         redisTokenRepository.deleteTokens(member.getId());
+
+        // 블랙리스트 처리
+        String accessToken = resolveTokenFromHeaderOrCookie(request, ACCESS_PREFIX);
+        long expiration = jwtUtil.getRemainingExpiration(accessToken);
+        redisTokenRepository.blacklistToken(accessToken, expiration);
 
         Cookie accessCookie = jwtUtil.resetToken(ACCESS_PREFIX);
         Cookie refreshCookie = jwtUtil.resetToken(REFRESH_PREFIX);
 
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
+    }
+
+    public boolean isTokenBlacklisted(String token) {
+        return redisTokenRepository.isAccessTokenBlacklisted(token);
     }
 }

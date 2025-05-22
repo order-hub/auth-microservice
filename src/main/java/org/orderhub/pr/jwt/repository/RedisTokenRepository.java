@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,5 +28,13 @@ public class RedisTokenRepository implements TokenRepository {
     public void deleteTokens(UUID memberId) {
         redisTemplate.delete(memberId.toString()  + ":access");
         redisTemplate.delete(memberId + ":refresh");
+    }
+
+    public void blacklistToken(String token, long expirationMillis) {
+        redisTemplate.opsForValue().set("blacklist:" + token, "true", expirationMillis, TimeUnit.MILLISECONDS);
+    }
+
+    public boolean isAccessTokenBlacklisted(String token) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey("blacklist:" + token));
     }
 }

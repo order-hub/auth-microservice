@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.PublicKey;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.UUID;
 
 import static org.orderhub.pr.system.exception.auth.ExceptionMessage.INVALID_EXPIRED_JWT;
 import static org.orderhub.pr.system.exception.auth.ExceptionMessage.INVALID_JWT;
@@ -79,5 +81,19 @@ public class JwtUtil {
         cookie.setMaxAge(0);
         cookie.setPath("/");
         return cookie;
+    }
+
+    public long getRemainingExpiration(String token) {
+        try {
+            Date expiration = Jwts.parserBuilder()
+                    .setSigningKey(publicKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getExpiration();
+            return expiration.getTime() - System.currentTimeMillis();
+        } catch (Exception e) {
+            return 0; // 만료된 경우 0
+        }
     }
 }

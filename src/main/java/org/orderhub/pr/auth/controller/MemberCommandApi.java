@@ -1,6 +1,7 @@
 package org.orderhub.pr.auth.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.orderhub.pr.auth.service.MemberCommandService;
@@ -45,8 +46,8 @@ public class MemberCommandApi {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletResponse response, @RequestBody LogoutRequest requestMember) {
-        authService.logout(response, requestMember);
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response, @RequestBody LogoutRequest requestMember) {
+        authService.logout(request, response, requestMember);
         return ResponseEntity.noContent().build();
     }
 

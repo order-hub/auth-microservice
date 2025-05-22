@@ -2,6 +2,7 @@ package org.orderhub.pr.jwt.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.orderhub.pr.auth.domain.Member;
@@ -41,10 +42,10 @@ public class AuthService {
         return new AuthResponse(accessToken, refreshToken);
     }
 
-    public void logout(HttpServletResponse response, LogoutRequest request) {
-        Member member = memberQueryRepository.findByUsername(request.getUsername())
+    public void logout(HttpServletRequest request, HttpServletResponse response, LogoutRequest logoutRequest) {
+        Member member = memberQueryRepository.findByUsername(logoutRequest.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND_ERROR));
-        jwtService.logout(member, response);
+        jwtService.logout(member,request, response);
     }
 
     public AuthResponse generateTokens(TokenRequest tokenRequest, HttpServletResponse response) throws JsonProcessingException {

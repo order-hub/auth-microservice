@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        jwtService.logout(member, response);
+        jwtService.logout(member, request, response);
     }
 
     private boolean isPermittedURI(String requestURI) {
