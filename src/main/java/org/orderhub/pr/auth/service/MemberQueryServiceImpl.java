@@ -7,12 +7,12 @@ import org.orderhub.common.MemberRole;
 import org.orderhub.common.MemberStatus;
 import org.orderhub.pr.auth.dto.MemberQueryDto.*;
 import org.orderhub.pr.auth.repository.MemberQueryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.orderhub.pr.system.exception.auth.ExceptionMessage.MEMBER_NOT_FOUND_ERROR;
 
@@ -23,11 +23,9 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     private final MemberQueryRepository memberQueryRepository;
 
     @Override
-    public List<FindMemberByIdResponse> findAllMembers() {
-        return memberQueryRepository.findAll().stream()
-                .map(this::convertToFindMemberByIdResponse)
-                .collect(Collectors.toList());
-
+    public Page<FindMemberByIdResponse> findAllMembers(Pageable pageable) {
+        return memberQueryRepository.findAll(pageable)
+                .map(this::convertToFindMemberByIdResponse);
     }
 
     @Override
@@ -51,19 +49,15 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     }
 
     @Override
-    public List<FindMemberByIdResponse> findByStatus(MemberStatus status) {
-        return memberQueryRepository.findByStatus(status)
-                .stream()
-                .map(this::convertToFindMemberByIdResponse)
-                .collect(Collectors.toList());
+    public Page<FindMemberByIdResponse> findByStatus(MemberStatus status, Pageable pageable) {
+        return memberQueryRepository.findByStatus(status, pageable)
+                .map(this::convertToFindMemberByIdResponse);
     }
 
     @Override
-    public List<FindMemberByIdResponse> findByRole(MemberRole role) {
-        return memberQueryRepository.findByRole(role)
-                .stream()
-                .map(this::convertToFindMemberByIdResponse)
-                .collect(Collectors.toList());
+    public Page<FindMemberByIdResponse> findByRole(MemberRole role, Pageable pageable) {
+        return memberQueryRepository.findByRole(role,pageable)
+                .map(this::convertToFindMemberByIdResponse);
     }
 
     @Override

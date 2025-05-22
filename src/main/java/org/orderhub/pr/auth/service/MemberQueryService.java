@@ -4,18 +4,18 @@ import org.orderhub.pr.auth.domain.Member;
 import org.orderhub.common.MemberRole;
 import org.orderhub.common.MemberStatus;
 import org.orderhub.pr.auth.dto.MemberQueryDto.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.UUID;
 
-// TODO List -> Pageable 변경
 public interface MemberQueryService {
-    List<FindMemberByIdResponse> findAllMembers();
+    Page<FindMemberByIdResponse> findAllMembers(Pageable pageable);
     Member findMemberEntityById(UUID id);
     FindMemberByIdResponse findMemberById(UUID id);
     FindMemberByUsernameResponse findByUsername(String username);
-    List<FindMemberByIdResponse> findByStatus(MemberStatus status);
-    List<FindMemberByIdResponse> findByRole(MemberRole role);
+    Page<FindMemberByIdResponse> findByStatus(MemberStatus status, Pageable pageable);
+    Page<FindMemberByIdResponse> findByRole(MemberRole role, Pageable pageable);
     boolean existsByUsername(String username);
     boolean existsByTel(String tel);
 }

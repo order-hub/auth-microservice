@@ -5,16 +5,9 @@ import lombok.Data;
 import org.orderhub.common.MemberRole;
 import org.orderhub.common.MemberStatus;
 
-import java.util.List;
 import java.util.UUID;
 
 public class MemberQueryDto {
-
-    @Builder
-    @Data
-    public static class FindMemberResponse {
-        private List<FindMemberByIdResponse> members;
-    }
 
     @Builder
     @Data
